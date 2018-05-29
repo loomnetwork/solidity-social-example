@@ -2,6 +2,8 @@
 
 Sample DAppChain showing the integration between LoomProvider, Web3 and [Loom.js](https://github.com/loomnetwork/loom-js) for a super simple social network interaction, where users can post and comment on posts
 
+![](https://dzwonsemrish7.cloudfront.net/items/2W3c2O3G2A1q1l3f3D3d/Screen%20Recording%202018-05-29%20at%2003.35%20PM.gif)
+
 > The smart contract compiled for this examples uses the Solidity version 0.4.24 (SimpleSocialNetwork.sol)
 
 > This example also uses Redis and ElasticSearch to manages a cache layer
