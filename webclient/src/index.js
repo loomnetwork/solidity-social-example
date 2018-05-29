@@ -16,15 +16,51 @@ const Index = class Index extends React.Component {
     }
   }
 
+  async updatePostsAndComments() {
+    let posts = []
+    try {
+      posts = await getIndexed('posts')
+    } catch(err) {
+      console.error('Cannot retrieve posts, maybe no post exists yet')
+    }
+
+    let comments = []
+    try {
+      comments = await getIndexed('comments')
+    } catch(err) {
+      console.warn('No comments')
+    }
+
+    posts = posts.map(post => {
+      comments.forEach(comment => {
+        if (post.postId == comment.postId) {
+          post.comments = post.comments || []
+          post.comments = post.comments.sort((a, b) => +a.commentId < +b.commentId)
+          post.comments.push(comment)
+        }
+      })
+
+      return post
+    })
+
+    posts = posts.sort((a, b) => +a.postId < +b.postId)
+    this.setState({posts})
+  }
+
   async componentDidMount() {
     await this.contract.start()
     this.setState({user: this.contract.getUser()})
-    getIndexed(posts => this.setState({posts}))
+    this.intervalHandler = setInterval(() => {
+      this.updatePostsAndComments()
+    }, 1000)
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.intervalHandler)
   }
 
   async newPost(text) {
     await this.contract.newPost(text)
-    getIndexed(posts => this.setState({posts}))
   }
 
   async sendComment(postId, text) {
@@ -33,17 +69,29 @@ const Index = class Index extends React.Component {
 
   render() {
     const posts = this.state.posts.map((post, index) => {
-      return <Post value={post} key={index} sendComment={(postId, text) => this.sendComment(postId, text)} />
+      return (
+        <li className="list-group-item" key={index} >
+          <Post value={post} sendComment={(postId, text) => this.sendComment(postId, text)} />
+        </li>
+      )
     })
 
+    const MT10 = {
+      marginTop: '10px'
+    }
+
     return (
-      <div>
-        <h1>Hello User: {this.state.user}</h1>
-        <div>
+      <div className="container">
+        <h5 style={MT10}>
+          <label>Hello: {this.state.user}</label>
+        </h5>
+        <div style={MT10}>
           <Text onTextEntry={(text) => this.newPost(text)} ></Text>
         </div>
         <div>
-          {posts}
+          <ul className="list-group" style={MT10}>
+            {posts}
+          </ul>
         </div>
       </div>
     )

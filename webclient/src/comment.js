@@ -6,8 +6,7 @@ export default class Comment extends React.Component {
     return (
       <div>
         <pre>{this.props.value.text}</pre>
-        <small>{this.props.value.owner}</small>
-        <hr />
+        <small>user: {this.props.value.owner}</small>
       </div>
     )
   }
