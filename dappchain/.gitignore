@@ -1,0 +1,6 @@
+build
+protoc-gen-gogo
+contract.log
+loom.log
+app.db
+chaindata

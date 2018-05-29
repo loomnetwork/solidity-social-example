@@ -1,0 +1,10 @@
+{
+    "contracts": [
+        {
+            "vm": "EVM",
+            "format": "hex",
+            "name": "SimpleSocialNetwork",
+            "location": "contracts/SimpleSocialNetwork.bin"
+        }
+    ]
+}

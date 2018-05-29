@@ -1,0 +1,22 @@
+{
+  "scripts": {
+    "start": "webpack-dev-server --hot --content-base ./dist"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.4",
+    "babel-plugin-transform-async-to-generator": "^6.24.1",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "google-protobuf": "^3.5.0",
+    "loom-js": "^1.3.3",
+    "react": "^16.3.2",
+    "react-dom": "^16.3.2",
+    "regenerator-runtime": "^0.11.1",
+    "web3": "^1.0.0-beta.34",
+    "webpack": "^4.8.1",
+    "webpack-cli": "^2.1.3",
+    "webpack-dev-server": "^3.1.4",
+    "websocket": "^1.0.26"
+  }
+}
