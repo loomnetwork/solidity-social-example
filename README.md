@@ -61,6 +61,7 @@ The `indexer.js` is a service which will receive all events from the smart contr
 ```bash
 # On second terminal
 cd web3-loom-provider/webclient
+npm install
 node indexer.js
 ```
 
@@ -86,35 +87,6 @@ yarn start
 ### 7.) Running
 
 The Simple Social Network web interface will be available on `http://localhost:8080`
-
-Project structure
-----
-
-```bash
-.
-├── README.md
-├── dappchain
-│   ├── SimpleSocialNetwork.sol
-│   ├── contracts
-│   │   ├── SimpleSocialNetwork.abi
-│   │   └── SimpleSocialNetwork.bin
-│   ├── genesis.example.json
-│   └── genesis.json
-└── webclient
-    ├── dist
-    │   └── index.html
-    ├── indexer.js
-    ├── package.json
-    ├── src
-    │   ├── comment.js
-    │   ├── contract.js
-    │   ├── index.js
-    │   ├── indexer_client.js
-    │   ├── post.js
-    │   └── text.js
-    ├── webpack.config.js
-    └── yarn.lock
-```
 
 
 Loom Network
