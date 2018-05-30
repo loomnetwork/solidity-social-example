@@ -25,8 +25,6 @@ git clone https://github.com/loomnetwork/solidity-social-example
 
 ```bash
 cd solidity-social-example
-mkdir tmpgopath
-export GOPATH=`pwd`/tmpgopath
 
 cd dappchain
 wget https://storage.googleapis.com/private.delegatecall.com/loom/osx/build-137/loom
