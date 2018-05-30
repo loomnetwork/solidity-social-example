@@ -24,7 +24,7 @@ git clone https://github.com/loomnetwork/solidity-social-example
 ### 3.) Start the DappChain
 
 ```bash
-cd web3-loom-provider
+cd solidity-social-example
 mkdir tmpgopath
 export GOPATH=`pwd`/tmpgopath
 
