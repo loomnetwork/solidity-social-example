@@ -61,7 +61,8 @@ The `indexer.js` is a service which will receive all events from the smart contr
 ```bash
 # On second terminal
 cd web3-loom-provider/webclient
-npm install
+# install
+yarn
 node indexer.js
 ```
 
