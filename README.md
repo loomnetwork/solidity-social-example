@@ -32,18 +32,13 @@ cd dappchain
 wget https://storage.googleapis.com/private.delegatecall.com/loom/osx/build-137/loom
 chmod +x loom
 
-# Compile
-export GOPATH=$GOPATH:`pwd`
-make deps
-make
 
 # Configure
-cd build
-../loom init
-cp ../genesis.example.json genesis.json
+./loom init
+cp genesis.example.json genesis.json
 
 # Run
-../loom run
+./loom run
 ```
 
 ### 4.) Start ElasticSearch and Redis
