@@ -60,11 +60,13 @@ const Index = class Index extends React.Component {
   }
 
   async newPost(text) {
-    await this.contract.newPost(text)
+    const tx = await this.contract.newPost(text)
+    console.log('New Post Sent', tx)
   }
 
   async sendComment(postId, text) {
-    await this.contract.newComment(postId, text)
+    const tx = await this.contract.newComment(postId, text)
+    console.log('New Comment Sent', tx)
   }
 
   render() {

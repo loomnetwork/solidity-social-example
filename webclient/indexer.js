@@ -18,6 +18,10 @@ const http = require('http')
     'ws://127.0.0.1:9999/queryws',
   )
 
+  client.on('error', (message => {
+    console.error('message', message)
+  }))
+
   // Setting up Web3 with LoomProvider
   const web3 = new Web3(new LoomProvider(client))
   const ABI = [{"constant":false,"inputs":[{"name":"_postId","type":"uint256"},{"name":"_text","type":"string"}],"name":"newComment","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"commentFromAccount","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_text","type":"string"}],"name":"newPost","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"hasPosts","outputs":[{"name":"_hasPosts","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"comments","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"postsFromAccount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"commentsFromPost","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"postId","type":"uint256"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"text","type":"string"}],"name":"NewPostAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"postId","type":"uint256"},{"indexed":false,"name":"commentId","type":"uint256"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"text","type":"string"}],"name":"NewCommentAdded","type":"event"}]
@@ -80,6 +84,7 @@ const http = require('http')
       url = 'http://localhost:9200/socialnetwork_comments/_search'
     } else {
       // Type not indexed on ElasticSearch
+      console.warn(`Request type ${req.url} not indexed`)
     }
 
     let ecResult
@@ -93,4 +98,6 @@ const http = require('http')
 
     res.end()
   }).listen(8081)
+
+  console.log('Listen on 8081')
 })()
