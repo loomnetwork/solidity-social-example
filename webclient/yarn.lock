@@ -3781,9 +3781,9 @@ long@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/long/-/long-3.2.0.tgz#d821b7138ca1cb581c172990ef14db200b5c474b"
 
-loom-js@^1.4.3:
-  version "1.4.3"
-  resolved "https://registry.yarnpkg.com/loom-js/-/loom-js-1.4.3.tgz#80c6cdbc15861a87414e3575e79066bced121702"
+loom-js@1.7.1:
+  version "1.7.1"
+  resolved "https://registry.yarnpkg.com/loom-js/-/loom-js-1.7.1.tgz#4baca11602421aca36effc12a6087eb2f657c57d"
   dependencies:
     crypto-browserify "^3.12.0"
     google-protobuf "^3.5.0"

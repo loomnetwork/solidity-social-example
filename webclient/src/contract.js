@@ -30,7 +30,7 @@ export default class Contract {
     const publicKey = CryptoUtils.publicKeyFromPrivateKey(privateKey)
     const client = getClient(privateKey, publicKey)
     const from = LocalAddress.fromPublicKey(publicKey).toString()
-    const web3 = new Web3(new LoomProvider(client))
+    const web3 = new Web3(new LoomProvider(client, privateKey))
     this.user = from
 
     client.on('error', msg => {
