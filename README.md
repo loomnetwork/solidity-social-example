@@ -27,7 +27,7 @@ git clone https://github.com/loomnetwork/solidity-social-example
 cd solidity-social-example
 
 cd dappchain
-wget https://storage.googleapis.com/private.delegatecall.com/loom/osx/build-137/loom
+wget https://storage.googleapis.com/private.delegatecall.com/loom/osx/build-161/loom
 chmod +x loom
 
 
@@ -58,7 +58,7 @@ brew services start redis
 
 The `indexer.js` is a service which will receive all events from the smart contract and feeds a cache layer built on a message queue and a fast database (Redis + ElasticSearch), it also serves the app with a fresh data on the address `http://localhost:8081/posts` or `http://localhost:8081/comments`
 
-Note this works best on Node8 
+Note this works best on Node8
 ```
 brew install node@8
 ```
@@ -81,9 +81,6 @@ cd web3-loom-provider/webclient
 
 # Install
 yarn
-
-# Compile protobuf
-yarn run proto
 
 # Start the demo
 yarn start
