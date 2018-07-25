@@ -4,7 +4,8 @@ const Queue = require('bee-queue')
 const {
   Client,
   CryptoUtils,
-  LoomProvider
+  LoomProvider,
+  LocalAddress
 } = require('loom-js')
 
 const request = require('request-promise')
@@ -21,9 +22,13 @@ const http = require('http')
     console.error('message', message)
   }))
 
+  const privateKey = CryptoUtils.generatePrivateKey()
+  const publicKey = CryptoUtils.publicKeyFromPrivateKey(privateKey)
+  const from = LocalAddress.fromPublicKey(publicKey).toString()
+
   // Setting up Web3 with LoomProvider
-  const web3 = new Web3(new LoomProvider(client, CryptoUtils.generatePrivateKey()))
-  const ABI = [{"constant":false,"inputs":[{"name":"_postId","type":"uint256"},{"name":"_text","type":"string"}],"name":"newComment","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"commentFromAccount","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_text","type":"string"}],"name":"newPost","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"hasPosts","outputs":[{"name":"_hasPosts","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"comments","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"postsFromAccount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"commentsFromPost","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"anonymous":false,"inputs":[{"indexed":false,"name":"postId","type":"uint256"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"text","type":"string"}],"name":"NewPostAdded","type":"event"},{"anonymous":false,"inputs":[{"indexed":false,"name":"postId","type":"uint256"},{"indexed":false,"name":"commentId","type":"uint256"},{"indexed":false,"name":"owner","type":"address"},{"indexed":false,"name":"text","type":"string"}],"name":"NewCommentAdded","type":"event"}]
+  const web3 = new Web3(new LoomProvider(client, privateKey))
+  const ABI = [{"constant":false,"inputs":[{"name":"_postId","type":"uint256"},{"name":"_text","type":"string"}],"name":"newComment","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"posts","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"commentFromAccount","outputs":[{"name":"","type":"address"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":false,"inputs":[{"name":"_text","type":"string"}],"name":"newPost","outputs":[],"payable":false,"stateMutability":"nonpayable","type":"function"},{"constant":true,"inputs":[],"name":"hasPosts","outputs":[{"name":"_hasPosts","type":"bool"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"}],"name":"comments","outputs":[{"name":"text","type":"string"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"address"},{"name":"","type":"uint256"}],"name":"postsFromAccount","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"constant":true,"inputs":[{"name":"","type":"uint256"},{"name":"","type":"uint256"}],"name":"commentsFromPost","outputs":[{"name":"","type":"uint256"}],"payable":false,"stateMutability":"view","type":"function"},{"inputs":[],"payable":false,"stateMutability":"nonpayable","type":"constructor"},{"anonymous":false,"inputs":[{"indexed":false,"name":"postId","type":"uint256"},{"indexed":false,"name":"commentId","type":"uint256"},{"indexed":false,"name":"owner","type":"address"}],"name":"NewPostAdded","type":"event"}]
 
   const loomContractAddress = await client.getContractAddressAsync('SimpleSocialNetwork')
   const contractAddress = CryptoUtils.bytesToHexAddr(loomContractAddress.local.bytes)
@@ -36,15 +41,15 @@ const http = require('http')
   const newCommentQueue = new Queue('newComment')
 
   // Listen from post from smart contract
-  this._contract.events.NewPostAdded({}, (err, event) => {
+  this._contract.events.NewPostAdded({}, async (err, event) => {
     // Push to message queue
-    newPostQueue.createJob(event.returnValues).save()
-  })
-
-  // Listen from comments from smart contracts
-  this._contract.events.NewCommentAdded({}, (err, event) => {
-    // Push to message queue
-    newCommentQueue.createJob(event.returnValues).save()
+    if (event.returnValues.commentId === '0') {
+      event.returnValues.text = await this._contract.methods.posts(event.returnValues.postId).call({from})
+      newPostQueue.createJob(event.returnValues).save()
+    } else {
+      event.returnValues.text = await this._contract.methods.comments(event.returnValues.commentId).call({from})
+      newCommentQueue.createJob(event.returnValues).save()
+    }
   })
 
   // Processing posts

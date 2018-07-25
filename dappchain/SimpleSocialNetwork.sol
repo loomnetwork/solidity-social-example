@@ -16,8 +16,14 @@ contract SimpleSocialNetwork {
     Post[] public posts;
     Comment[] public comments;
 
-    event NewPostAdded(uint postId, address owner, string text);
-    event NewCommentAdded(uint postId, uint commentId, address owner, string text);
+    event NewPostAdded(uint postId, uint commentId, address owner);
+
+    constructor () public {
+        // created the first post and comment with ID
+        // IDs 0 are invalid
+        newPost("");
+        newComment(0, "");
+    }
 
     function hasPosts() public view returns(bool _hasPosts) {
         _hasPosts = posts.length > 0;
@@ -27,7 +33,7 @@ contract SimpleSocialNetwork {
         Post memory post = Post(_text);
         uint postId = posts.push(post) - 1;
         postsFromAccount[msg.sender].push(postId);
-        emit NewPostAdded(postId, msg.sender, _text);
+        emit NewPostAdded(postId, 0, msg.sender);
     }
 
     function newComment(uint _postId, string _text) public {
@@ -35,6 +41,6 @@ contract SimpleSocialNetwork {
         uint commentId = comments.push(comment) - 1;
         commentsFromPost[_postId].push(commentId);
         commentFromAccount[commentId] = msg.sender;
-        emit NewCommentAdded(_postId, commentId, msg.sender, _text);
+        emit NewPostAdded(_postId, commentId, msg.sender);
     }
 }
