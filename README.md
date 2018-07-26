@@ -65,7 +65,7 @@ brew install node@8
 
 ```bash
 # On second terminal
-cd web3-loom-provider/webclient
+cd solidity-social-example/webclient
 # install
 yarn
 node indexer.js
@@ -77,7 +77,7 @@ Finally we're going to start the webserver which will supply the interface allow
 
 ```bash
 # On third terminal
-cd web3-loom-provider/webclient
+cd solidity-social-example/webclient
 
 # Install
 yarn
