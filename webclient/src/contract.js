@@ -9,7 +9,7 @@ function getClient(privateKey, publicKey) {
   const client = new Client(
     'default',
     'ws://127.0.0.1:46658/websocket',
-    'ws://127.0.0.1:36658/queryws',
+    'ws://127.0.0.1:46658/queryws',
   )
 
   client.txMiddleware = [
