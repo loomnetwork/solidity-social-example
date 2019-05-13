@@ -1,3 +1,7 @@
+# Deprecated Repository
+
+This repository is **deprecated and no longer maintained**. Head over to the [Truffle DappChain Example](https://github.com/loomnetwork/truffle-dappchain-example) repository to learn how to build a simple web UI that interacts with Loom PlasmaChain.
+
 # Simple Social Network Example
 
 Sample DAppChain showing the integration between LoomProvider, Web3 and [Loom.js](https://github.com/loomnetwork/loom-js) for a super simple social network interaction, where users can post and comment on posts
